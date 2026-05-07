@@ -716,7 +716,7 @@ wheels = [
 
 [[package]]
 name = "cremalink"
-version = "0.1.0b25"
+version = "0.1.0b26"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -728,9 +728,9 @@ dependencies = [
     { name = "starlette" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/6a/9613c9492df5d2779316098b1ed5cee4422021768a6fb426eff9d7889d2a/cremalink-0.1.0b25.tar.gz", hash = "sha256:fe2fd21061b7f924ef524ec33e6823df499ab4afaffd77bc58e43b63ae4517e8", size = 500228, upload-time = "2026-04-09T20:03:46.858Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/60/5b/8d6a2e5495e0f9ba21b50352c05a88f99fc53f377bd3fa9bb7146f9c4a4d/cremalink-0.1.0b26.tar.gz", hash = "sha256:38ceed26ec261d402c1ad77942a749bda4ef630260177cbe69ddc04421bbcb20", size = 500543, upload-time = "2026-05-07T12:42:14.699Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/e1/f805866139d6cebc1cc34b018afdca52b44f75abcd3a583040048d2055ea/cremalink-0.1.0b25-py3-none-any.whl", hash = "sha256:162bbab53f1ab61d8f40f4d94724d31df216dcee12869063f876803804c3dd16", size = 70823, upload-time = "2026-04-09T20:03:45.535Z" },
+    { url = "https://files.pythonhosted.org/packages/0f/65/2da2c0fa78e4744addd3dd2d2e78c27e7a45a38cdcee937ee327371f1e2d/cremalink-0.1.0b26-py3-none-any.whl", hash = "sha256:0e8aecc56db6eed2c9fd43a69e95464bf7e9cd4276b067cff6a534897a678c0f", size = 70824, upload-time = "2026-05-07T12:42:13.283Z" },
 ]
 
 [[package]]
@@ -744,7 +744,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cremalink", specifier = "==0.1.0b25" },
+    { name = "cremalink", specifier = "==0.1.0b26" },
     { name = "homeassistant", specifier = ">=2026.2.3" },
 ]
 
@@ -841,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.135.3"
+version = "0.136.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -850,9 +850,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f7/e6/7adb4c5fa231e82c35b8f5741a9f2d055f520c29af5546fd70d3e8e1cd2e/fastapi-0.135.3.tar.gz", hash = "sha256:bd6d7caf1a2bdd8d676843cdcd2287729572a1ef524fc4d65c17ae002a1be654", size = 396524, upload-time = "2026-04-01T16:23:58.188Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/45/c130091c2dfa061bbfe3150f2a5091ef1adf149f2a8d2ae769ecaf6e99a2/fastapi-0.136.1.tar.gz", hash = "sha256:7af665ad7acfa0a3baf8983d393b6b471b9da10ede59c60045f49fbc89a0fa7f", size = 397448, upload-time = "2026-04-23T16:49:44.046Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/a4/5caa2de7f917a04ada20018eccf60d6cc6145b0199d55ca3711b0fc08312/fastapi-0.135.3-py3-none-any.whl", hash = "sha256:9b0f590c813acd13d0ab43dd8494138eb58e484bfac405db1f3187cfc5810d98", size = 117734, upload-time = "2026-04-01T16:23:59.328Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/ff/2e4eca3ade2c22fe1dea7043b8ee9dabe47753349eb1b56a202de8af6349/fastapi-0.136.1-py3-none-any.whl", hash = "sha256:a6e9d7eeada96c93a4d69cb03836b44fa34e2854accb7244a1ece36cd4781c3f", size = 117683, upload-time = "2026-04-23T16:49:42.437Z" },
 ]
 
 [[package]]
@@ -2352,15 +2352,15 @@ wheels = [
 
 [[package]]
 name = "uvicorn"
-version = "0.44.0"
+version = "0.46.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "h11" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/da/6eee1ff8b6cbeed47eeb5229749168e81eb4b7b999a1a15a7176e51410c9/uvicorn-0.44.0.tar.gz", hash = "sha256:6c942071b68f07e178264b9152f1f16dfac5da85880c4ce06366a96d70d4f31e", size = 86947, upload-time = "2026-04-06T09:23:22.826Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1f/93/041fca8274050e40e6791f267d82e0e2e27dd165627bd640d3e0e378d877/uvicorn-0.46.0.tar.gz", hash = "sha256:fb9da0926999cc6cb22dc7cd71a94a632f078e6ae47ff683c5c420750fb7413d", size = 88758, upload-time = "2026-04-23T07:16:00.151Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b7/23/a5bbd9600dd607411fa644c06ff4951bec3a4d82c4b852374024359c19c0/uvicorn-0.44.0-py3-none-any.whl", hash = "sha256:ce937c99a2cc70279556967274414c087888e8cec9f9c94644dfca11bd3ced89", size = 69425, upload-time = "2026-04-06T09:23:21.524Z" },
+    { url = "https://files.pythonhosted.org/packages/31/a3/5b1562db76a5a488274b2332a97199b32d0442aca0ed193697fd47786316/uvicorn-0.46.0-py3-none-any.whl", hash = "sha256:bbebbcbed972d162afca128605223022bedd345b7bc7855ce66deb31487a9048", size = 70926, upload-time = "2026-04-23T07:15:58.355Z" },
 ]
 
 [[package]]
