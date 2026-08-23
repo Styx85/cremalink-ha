@@ -1,14 +1,16 @@
 {
   "domain": "cremalink_ha",
   "name": "Cremalink for Home-Assistant",
-  "codeowners": ["@miditkl"],
+  "codeowners": [
+    "@miditkl"
+  ],
   "dependencies": [],
   "documentation": "https://github.com/miditkl/cremalink-ha",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "config_flow": true,
   "requirements": [
-    "cremalink==0.1.0b26"
+    "cremalink@git+https://github.com/Styx85/cremalink.git@a3dd2c5"
   ],
   "issue_tracker": "https://github.com/miditkl/cremalink-ha/issues",
   "version": "v0.2.0b1",

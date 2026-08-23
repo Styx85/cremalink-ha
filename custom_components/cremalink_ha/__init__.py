@@ -13,10 +13,16 @@ from cremalink import create_local_device, device_map, Client
 
 from .const import *
 from .coordinator import CremalinkCoordinator
+from .statistics_coordinator import CremalinkStatisticsCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SWITCH, Platform.BUTTON, Platform.SENSOR, Platform.BINARY_SENSOR]
+
+
+def supports_ecam610_statistics(map_selection: str) -> bool:
+    """Return whether the selected device map has verified ECAM610 A2 semantics."""
+    return str(map_selection).upper().removesuffix(".JSON") == "ECAM610"
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -94,10 +100,36 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = CremalinkCoordinator(hass, device)
     await coordinator.async_config_entry_first_refresh()
 
+    # Statistics use a separate slow cloud-assisted A2 polling path.
+    #
+    # Local control remains fully local. If a cloud token is available,
+    # it is additionally used to obtain the live machine statistics.
+    statistics_coordinator = None
+    token_file = entry.data.get(CONF_TOKEN_FILE)
+
+    # Semantic A2 mappings are currently hardware-verified for ECAM610 only.
+    statistics_supported = supports_ecam610_statistics(map_selection)
+
+    if token_file and statistics_supported:
+        statistics_coordinator = CremalinkStatisticsCoordinator(
+            hass,
+            dsn=dsn,
+            token_file=token_file,
+        )
+
+        # Statistics are optional and relatively slow to fetch. Do not delay
+        # the main integration setup while the initial A2 snapshot is loaded.
+        entry.async_create_background_task(
+            hass,
+            statistics_coordinator.async_refresh(),
+            f"{DOMAIN} initial statistics refresh",
+        )
+
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
         "coordinator": coordinator,
-        "device": device
+        "statistics_coordinator": statistics_coordinator,
+        "device": device,
     }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
