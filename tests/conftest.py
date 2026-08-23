@@ -17,8 +17,10 @@ _HA_MODULES = [
     "homeassistant.exceptions",
     "homeassistant.helpers",
     "homeassistant.helpers.update_coordinator",
+    "homeassistant.helpers.entity",
     "homeassistant.data_entry_flow",
     "homeassistant.components",
+    "homeassistant.components.sensor",
     "homeassistant.components.diagnostics",
 ]
 
@@ -86,3 +88,90 @@ _exc_mod.ConfigEntryNotReady = type("ConfigEntryNotReady", (Exception,), {})
 _exc_mod.HomeAssistantError = type("HomeAssistantError", (Exception,), {})
 
 sys.modules["homeassistant.const"].Platform = MagicMock()
+
+
+# Minimal concrete HA entity/coordinator stubs for sensor tests.
+class _DataUpdateCoordinator:
+    @classmethod
+    def __class_getitem__(cls, _item):
+        return cls
+
+    def __init__(
+        self,
+        hass,
+        logger,
+        *,
+        name=None,
+        update_interval=None,
+        **_kwargs,
+    ):
+        self.hass = hass
+        self.logger = logger
+        self.name = name
+        self.update_interval = update_interval
+        self.data = None
+        self.last_update_success = True
+
+    async def async_refresh(self):
+        try:
+            self.data = await self._async_update_data()
+            self.last_update_success = True
+        except Exception:
+            self.last_update_success = False
+
+    async def async_config_entry_first_refresh(self):
+        await self.async_refresh()
+
+
+class _CoordinatorEntity:
+    def __init__(self, coordinator):
+        self.coordinator = coordinator
+
+    @property
+    def available(self):
+        return bool(
+            getattr(self.coordinator, "last_update_success", True)
+        )
+
+
+class _UpdateFailed(Exception):
+    pass
+
+
+class _SensorEntity:
+    pass
+
+
+class _SensorStateClass:
+    TOTAL_INCREASING = "total_increasing"
+
+
+class _EntityCategory:
+    DIAGNOSTIC = "diagnostic"
+
+
+class _UnitOfVolume:
+    LITERS = "L"
+
+
+class _DeviceInfo(dict):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
+_uc_mod = sys.modules["homeassistant.helpers.update_coordinator"]
+_uc_mod.DataUpdateCoordinator = _DataUpdateCoordinator
+_uc_mod.CoordinatorEntity = _CoordinatorEntity
+_uc_mod.UpdateFailed = _UpdateFailed
+
+_sensor_mod = sys.modules["homeassistant.components.sensor"]
+_sensor_mod.SensorEntity = _SensorEntity
+_sensor_mod.SensorStateClass = _SensorStateClass
+
+_entity_mod = sys.modules["homeassistant.helpers.entity"]
+_entity_mod.DeviceInfo = _DeviceInfo
+
+_const_mod = sys.modules["homeassistant.const"]
+_const_mod.PERCENTAGE = "%"
+_const_mod.EntityCategory = _EntityCategory
+_const_mod.UnitOfVolume = _UnitOfVolume

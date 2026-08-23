@@ -220,12 +220,18 @@ class CremalinkConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if support.get("local"):
             lan = await self.hass.async_add_executor_job(_fetch_lan)
 
-        if (
+        local_available = (
             lan.get("lan_enabled")
             and lan.get("lan_ip")
             and lan.get("lanip_key")
             and support.get("local")
-        ):
+        )
+
+        statistics_supported = (
+            str(device_map_id).upper().removesuffix(".JSON") == "ECAM610"
+        )
+
+        if local_available:
             data = {
                 CONF_CONNECTION_TYPE: CONNECTION_LOCAL,
                 DEVICE_NAME: device_name,
@@ -235,14 +241,29 @@ class CremalinkConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_LAN_KEY: lan["lanip_key"],
                 CONF_DEVICE_IP: lan["lan_ip"],
             }
-            # Local connection doesn't need the cloud refresh token — discard it.
-            if self._cloud_token_file and os.path.exists(self._cloud_token_file):
+
+            # ECAM610 uses local control but retains the authenticated cloud
+            # token for live native A2 statistics.
+            if statistics_supported:
+                token_dir = self.hass.config.path(TOKEN_DIR)
+                os.makedirs(token_dir, exist_ok=True)
+                final_token_path = os.path.join(token_dir, f"{dsn}.json")
+
+                if self._cloud_token_file and os.path.exists(self._cloud_token_file):
+                    os.replace(self._cloud_token_file, final_token_path)
+
+                data[CONF_TOKEN_FILE] = final_token_path
+            elif self._cloud_token_file and os.path.exists(self._cloud_token_file):
                 os.remove(self._cloud_token_file)
+
         else:
             token_dir = self.hass.config.path(TOKEN_DIR)
+            os.makedirs(token_dir, exist_ok=True)
             final_token_path = os.path.join(token_dir, f"{dsn}.json")
+
             if self._cloud_token_file and os.path.exists(self._cloud_token_file):
-                os.rename(self._cloud_token_file, final_token_path)
+                os.replace(self._cloud_token_file, final_token_path)
+
             data = {
                 CONF_CONNECTION_TYPE: CONNECTION_CLOUD,
                 DEVICE_NAME: device_name,

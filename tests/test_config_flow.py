@@ -5,6 +5,7 @@ Covers spec US1 (cloud login replaces manual device-map/DSN entry), US2
 discovery -> local connection), and US4 (graceful cloud-only fallback).
 """
 import asyncio
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
@@ -14,6 +15,7 @@ from custom_components.cremalink_ha.const import (
     CONF_CONNECTION_TYPE,
     CONF_DEVICE_MAP,
     CONF_DSN,
+    CONF_TOKEN_FILE,
     CONNECTION_CLOUD,
     CONNECTION_LOCAL,
 )
@@ -173,7 +175,7 @@ class TestLocalConnectionCompletion:
         _FakeClient.raw_devices = ["DSN1"]
         _FakeClient.coffee_devices = [{"dsn": "DSN1", "product_name": "PrimaDonna", "oem_model": "DL-pd-soul"}]
         _FakeClient.lan_config = {"lan_enabled": True, "lanip_key": "KEY123", "lan_ip": "192.168.1.5", "status": "Online"}
-        monkeypatch.setattr(cf_mod, "detect_model_id", lambda *a, **k: "ECAM452")
+        monkeypatch.setattr(cf_mod, "detect_model_id", lambda *a, **k: "ECAM610")
 
         flow = _make_flow(_make_hass(tmp_path))
         result = _run(flow.async_step_user({"email": "a@b.com", "password": "pw", "manual_setup": False}))
@@ -182,6 +184,12 @@ class TestLocalConnectionCompletion:
         assert result["data"][CONF_CONNECTION_TYPE] == CONNECTION_LOCAL
         assert result["data"]["lan_key"] == "KEY123"
         assert result["data"]["device_ip"] == "192.168.1.5"
+
+        # Local control must retain the authenticated cloud token so the
+        # machine can additionally expose live A2 statistics.
+        token_file = result["data"][CONF_TOKEN_FILE]
+        assert token_file.endswith("DSN1.json")
+        assert Path(token_file).exists()
 
 
 class TestCloudFallbackCompletion:
@@ -197,3 +205,50 @@ class TestCloudFallbackCompletion:
         assert result["type"] == "create_entry"
         assert result["data"][CONF_CONNECTION_TYPE] == CONNECTION_CLOUD
         assert "token_file" in result["data"]
+
+
+class TestLocalConnectionWithoutStatistics:
+    def test_non_ecam610_local_entry_discards_cloud_token(
+        self,
+        tmp_path,
+        monkeypatch,
+    ):
+        _FakeClient.raw_devices = ["DSN2"]
+        _FakeClient.coffee_devices = [
+            {
+                "dsn": "DSN2",
+                "product_name": "Other Machine",
+                "oem_model": "DL-other",
+            }
+        ]
+        _FakeClient.lan_config = {
+            "lan_enabled": True,
+            "lanip_key": "KEY456",
+            "lan_ip": "192.168.1.6",
+            "status": "Online",
+        }
+
+        monkeypatch.setattr(
+            cf_mod,
+            "detect_model_id",
+            lambda *a, **k: "ECAM452",
+        )
+
+        flow = _make_flow(_make_hass(tmp_path))
+
+        result = _run(
+            flow.async_step_user(
+                {
+                    "email": "a@b.com",
+                    "password": "pw",
+                    "manual_setup": False,
+                }
+            )
+        )
+
+        assert result["type"] == "create_entry"
+        assert result["data"][CONF_CONNECTION_TYPE] == CONNECTION_LOCAL
+        assert CONF_TOKEN_FILE not in result["data"]
+
+        token_dir = tmp_path / "cremalink_tokens"
+        assert not (token_dir / "DSN2.json").exists()
