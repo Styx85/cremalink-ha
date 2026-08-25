@@ -13,6 +13,6 @@
     "cremalink@git+https://github.com/Styx85/cremalink.git@6036e47fd1cd3fefddafbab40c71ab55f95650c5"
   ],
   "issue_tracker": "https://github.com/miditkl/cremalink-ha/issues",
-  "version": "v0.2.0b3",
+  "version": "v0.2.0b4",
   "quality_scale": "bronze"
 }

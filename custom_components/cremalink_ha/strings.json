@@ -186,6 +186,60 @@
     "button": {
       "refresh_a2_statistics": {
         "name": "Refresh A2 statistics"
+      },
+      "brew_americano": {
+        "name": "Brew Americano"
+      },
+      "brew_caffe_latte": {
+        "name": "Brew Caffè Latte"
+      },
+      "brew_cappuccino": {
+        "name": "Brew Cappuccino"
+      },
+      "brew_cappuccino_mix": {
+        "name": "Brew Cappuccino Mix"
+      },
+      "brew_cappuccino_plus": {
+        "name": "Brew Cappuccino+"
+      },
+      "brew_coffee": {
+        "name": "Brew Coffee"
+      },
+      "brew_cortado": {
+        "name": "Brew Cortado"
+      },
+      "brew_doppio_plus": {
+        "name": "Brew Doppio+"
+      },
+      "brew_double_espresso": {
+        "name": "Brew Double Espresso"
+      },
+      "brew_espresso": {
+        "name": "Brew Espresso"
+      },
+      "brew_espresso_macchiato": {
+        "name": "Brew Espresso Macchiato"
+      },
+      "brew_espresso_soul": {
+        "name": "Brew Espresso SOUL"
+      },
+      "brew_flat_white": {
+        "name": "Brew Flat White"
+      },
+      "brew_hot_milk": {
+        "name": "Prepare hot milk"
+      },
+      "brew_hot_water": {
+        "name": "Dispense hot water"
+      },
+      "brew_latte_macchiato": {
+        "name": "Brew Latte Macchiato"
+      },
+      "brew_long_coffee": {
+        "name": "Brew Long"
+      },
+      "stop_brewing": {
+        "name": "Stop brewing"
       }
     }
   }

@@ -107,6 +107,60 @@
     "button": {
       "refresh_a2_statistics": {
         "name": "A2-Statistik aktualisieren"
+      },
+      "brew_americano": {
+        "name": "Americano zubereiten"
+      },
+      "brew_caffe_latte": {
+        "name": "Caffè Latte zubereiten"
+      },
+      "brew_cappuccino": {
+        "name": "Cappuccino zubereiten"
+      },
+      "brew_cappuccino_mix": {
+        "name": "Cappuccino Mix zubereiten"
+      },
+      "brew_cappuccino_plus": {
+        "name": "Cappuccino+ zubereiten"
+      },
+      "brew_coffee": {
+        "name": "Kaffee zubereiten"
+      },
+      "brew_cortado": {
+        "name": "Cortado zubereiten"
+      },
+      "brew_doppio_plus": {
+        "name": "Doppio+ zubereiten"
+      },
+      "brew_double_espresso": {
+        "name": "Doppelten Espresso zubereiten"
+      },
+      "brew_espresso": {
+        "name": "Espresso zubereiten"
+      },
+      "brew_espresso_macchiato": {
+        "name": "Espresso Macchiato zubereiten"
+      },
+      "brew_espresso_soul": {
+        "name": "Espresso SOUL zubereiten"
+      },
+      "brew_flat_white": {
+        "name": "Flat White zubereiten"
+      },
+      "brew_hot_milk": {
+        "name": "Heiße Milch zubereiten"
+      },
+      "brew_hot_water": {
+        "name": "Heißwasser ausgeben"
+      },
+      "brew_latte_macchiato": {
+        "name": "Latte Macchiato zubereiten"
+      },
+      "brew_long_coffee": {
+        "name": "Long zubereiten"
+      },
+      "stop_brewing": {
+        "name": "Zubereitung stoppen"
       }
     }
   }
