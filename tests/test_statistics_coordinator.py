@@ -49,7 +49,7 @@ def test_statistics_coordinator_fetches_snapshot(monkeypatch):
         def __init__(self, token_file):
             calls["token_file"] = token_file
 
-        def get_ecam610_statistics(self, dsn):
+        def get_ecam610_statistics(self, dsn, **_kwargs):
             calls["dsn"] = dsn
             return snapshot
 
@@ -77,7 +77,7 @@ def test_statistics_coordinator_wraps_client_failure(monkeypatch):
         def __init__(self, _token_file):
             pass
 
-        def get_ecam610_statistics(self, _dsn):
+        def get_ecam610_statistics(self, _dsn, **_kwargs):
             raise RuntimeError("synthetic cloud failure")
 
     monkeypatch.setattr(module, "Client", FakeClient)
@@ -112,7 +112,7 @@ def test_statistics_coordinator_retains_snapshot_on_a2_timeout(monkeypatch):
         def __init__(self, _token_file):
             pass
 
-        def get_ecam610_statistics(self, _dsn):
+        def get_ecam610_statistics(self, _dsn, **_kwargs):
             raise TimeoutError(
                 "No A2 statistics response for start_id=3001 within 20s"
             )
@@ -144,7 +144,7 @@ def test_statistics_snapshot_timestamp_changes_only_on_success(monkeypatch):
         def __init__(self, _token_file):
             pass
 
-        def get_ecam610_statistics(self, _dsn):
+        def get_ecam610_statistics(self, _dsn, **_kwargs):
             if snapshots:
                 return snapshots.pop(0)
 
@@ -218,3 +218,58 @@ def test_statistics_force_refresh_tracks_in_progress():
         assert coordinator.refresh_in_progress is False
 
     asyncio.run(_run())
+
+
+
+def test_statistics_coordinator_tracks_a2_progress(monkeypatch):
+    """A2 page progress should be retained by the coordinator."""
+
+    snapshot = {
+        "known": {"total_beverages": 123},
+        "unknown": {},
+        "raw": {43010: 123},
+    }
+
+    class FakeClient:
+        def __init__(self, _token_file):
+            pass
+
+        def get_ecam610_statistics(
+            self,
+            _dsn,
+            *,
+            progress_callback=None,
+        ):
+            assert progress_callback is not None
+
+            progress_callback(
+                {
+                    "phase": "request",
+                    "page": 4,
+                    "start_id": 23000,
+                    "request_count": 7,
+                    "collected_count": 31,
+                }
+            )
+
+            return snapshot
+
+    monkeypatch.setattr(module, "Client", FakeClient)
+
+    coordinator = CremalinkStatisticsCoordinator(
+        FakeHass(),
+        dsn="test-dsn",
+        token_file="/tmp/test-token.json",
+    )
+    coordinator.async_update_listeners = lambda: None
+
+    result = asyncio.run(coordinator._async_update_data())
+
+    assert result["raw"] == {43010: 123}
+    assert coordinator.a2_progress == {
+        "phase": "request",
+        "page": 4,
+        "start_id": 23000,
+        "request_count": 7,
+        "collected_count": 31,
+    }
