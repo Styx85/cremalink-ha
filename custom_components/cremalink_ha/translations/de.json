@@ -109,55 +109,55 @@
         "name": "A2-Statistik aktualisieren"
       },
       "brew_americano": {
-        "name": "Americano zubereiten"
+        "name": "Americano"
       },
       "brew_caffe_latte": {
-        "name": "Caffè Latte zubereiten"
+        "name": "Caffelatte"
       },
       "brew_cappuccino": {
-        "name": "Cappuccino zubereiten"
+        "name": "Cappuccino"
       },
       "brew_cappuccino_mix": {
-        "name": "Cappuccino Mix zubereiten"
+        "name": "Cappuccino Mix"
       },
       "brew_cappuccino_plus": {
-        "name": "Cappuccino+ zubereiten"
+        "name": "Cappuccino+"
       },
       "brew_coffee": {
-        "name": "Kaffee zubereiten"
+        "name": "Kaffee"
       },
       "brew_cortado": {
-        "name": "Cortado zubereiten"
+        "name": "Cortado"
       },
       "brew_doppio_plus": {
-        "name": "Doppio+ zubereiten"
+        "name": "Doppio+"
       },
       "brew_double_espresso": {
-        "name": "Doppelten Espresso zubereiten"
+        "name": "2x Espresso"
       },
       "brew_espresso": {
-        "name": "Espresso zubereiten"
+        "name": "Espresso"
       },
       "brew_espresso_macchiato": {
-        "name": "Espresso Macchiato zubereiten"
+        "name": "Espresso Macchiato"
       },
       "brew_espresso_soul": {
-        "name": "Espresso SOUL zubereiten"
+        "name": "Espresso SOUL"
       },
       "brew_flat_white": {
-        "name": "Flat White zubereiten"
+        "name": "Flat White"
       },
       "brew_hot_milk": {
-        "name": "Heiße Milch zubereiten"
+        "name": "Heiße Milch"
       },
       "brew_hot_water": {
-        "name": "Heißwasser ausgeben"
+        "name": "Heißwasser"
       },
       "brew_latte_macchiato": {
-        "name": "Latte Macchiato zubereiten"
+        "name": "Latte Macchiato"
       },
       "brew_long_coffee": {
-        "name": "Long zubereiten"
+        "name": "Long"
       },
       "stop_brewing": {
         "name": "Zubereitung stoppen"
