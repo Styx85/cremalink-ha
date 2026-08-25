@@ -428,6 +428,12 @@ class CremalinkStatisticsDiagnosticsSensor(
         unknown = data.get("unknown", {})
         raw = data.get("raw", {})
 
+        progress = getattr(
+            self.coordinator,
+            "a2_progress",
+            None,
+        ) or {}
+
         # String keys are friendlier for HA's JSON/state machinery.
         return {
             "unknown_statistics": {
@@ -445,4 +451,26 @@ class CremalinkStatisticsDiagnosticsSensor(
                 "refresh_in_progress",
                 False,
             ),
+            "refresh_started_at": getattr(
+                self.coordinator,
+                "refresh_started_at",
+                None,
+            ),
+            "refresh_running_for_seconds": getattr(
+                self.coordinator,
+                "refresh_running_for_seconds",
+                None,
+            ),
+            "last_refresh_duration_seconds": getattr(
+                self.coordinator,
+                "last_refresh_duration_seconds",
+                None,
+            ),
+            "a2_phase": progress.get("phase"),
+            "a2_page": progress.get("page"),
+            "a2_start_id": progress.get("start_id"),
+            "a2_request_count": progress.get("request_count"),
+            "a2_returned_count": progress.get("returned_count"),
+            "a2_last_id": progress.get("last_id"),
+            "a2_collected_count": progress.get("collected_count"),
         }

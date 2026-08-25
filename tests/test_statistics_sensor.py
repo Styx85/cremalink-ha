@@ -157,3 +157,43 @@ def test_diagnostics_entity_disabled_by_default():
     )
 
     assert sensor._attr_entity_registry_enabled_default is False
+
+
+
+def test_diagnostics_sensor_exposes_refresh_progress():
+    coordinator = FakeCoordinator(SNAPSHOT)
+    coordinator.refresh_in_progress = True
+    coordinator.refresh_started_at = "2026-08-25T10:00:00+00:00"
+    coordinator.refresh_running_for_seconds = 42.5
+    coordinator.last_refresh_duration_seconds = 123.4
+    coordinator.a2_progress = {
+        "phase": "page_complete",
+        "page": 4,
+        "start_id": 23000,
+        "request_count": 7,
+        "returned_count": 7,
+        "last_id": 23006,
+        "collected_count": 39,
+    }
+
+    sensor = CremalinkStatisticsDiagnosticsSensor(
+        coordinator,
+        ENTRY,
+    )
+
+    attrs = sensor.extra_state_attributes
+
+    assert attrs["refresh_in_progress"] is True
+    assert (
+        attrs["refresh_started_at"]
+        == "2026-08-25T10:00:00+00:00"
+    )
+    assert attrs["refresh_running_for_seconds"] == 42.5
+    assert attrs["last_refresh_duration_seconds"] == 123.4
+    assert attrs["a2_phase"] == "page_complete"
+    assert attrs["a2_page"] == 4
+    assert attrs["a2_start_id"] == 23000
+    assert attrs["a2_request_count"] == 7
+    assert attrs["a2_returned_count"] == 7
+    assert attrs["a2_last_id"] == 23006
+    assert attrs["a2_collected_count"] == 39
