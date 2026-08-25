@@ -120,10 +120,37 @@ class CremalinkStatisticsCoordinator(DataUpdateCoordinator[dict]):
 
         def _read_statistics() -> dict:
             client = Client(self.token_file)
-            return client.get_ecam610_statistics(
+
+            snapshot = client.get_ecam610_statistics(
                 self.dsn,
                 progress_callback=self._publish_a2_progress,
             )
+
+            # Service properties are auxiliary diagnostics used to
+            # cross-check still-unidentified A2 counters. Failure to read
+            # them must not invalidate an otherwise successful A2 snapshot.
+            service_reader = getattr(
+                client,
+                "get_ecam_service_properties",
+                None,
+            )
+
+            if callable(service_reader):
+                try:
+                    service_properties = service_reader(self.dsn)
+                except Exception as err:
+                    _LOGGER.debug(
+                        "Could not read ECAM service properties: %s",
+                        err,
+                    )
+                    service_properties = {}
+            else:
+                service_properties = {}
+
+            snapshot = dict(snapshot)
+            snapshot["service_properties"] = service_properties
+
+            return snapshot
 
         try:
             snapshot = await self.hass.async_add_executor_job(

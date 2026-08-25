@@ -63,7 +63,12 @@ def test_statistics_coordinator_fetches_snapshot(monkeypatch):
 
     result = asyncio.run(coordinator._async_update_data())
 
-    assert result == snapshot
+    assert result["known"] == snapshot["known"]
+    assert result["unknown"] == snapshot["unknown"]
+    assert result["raw"] == snapshot["raw"]
+    assert result["service_properties"] == {}
+    assert "snapshot_fetched_at" in result
+
     assert calls == {
         "token_file": "/tmp/test-token.json",
         "dsn": "test-dsn",
@@ -273,3 +278,87 @@ def test_statistics_coordinator_tracks_a2_progress(monkeypatch):
         "request_count": 7,
         "collected_count": 31,
     }
+
+
+def test_statistics_snapshot_includes_service_properties(monkeypatch):
+    """A2 diagnostics should carry the relevant Ayla service properties."""
+
+    snapshot = {
+        "known": {"total_beverages": 42},
+        "unknown": {100: 111, 109: 222},
+        "raw": {100: 111, 109: 222, 43010: 42},
+    }
+
+    service_properties = {
+        "d550_water_calc_qty": 333,
+        "d555_water_filter_qty": 444,
+        "d556_water_hardness": 3,
+        "d512_percentage_to_deca": 55,
+        "d513_percentage_usage_fltr": 66,
+    }
+
+    class FakeClient:
+        def __init__(self, _token_file):
+            pass
+
+        def get_ecam610_statistics(
+            self,
+            _dsn,
+            *,
+            progress_callback=None,
+        ):
+            return snapshot
+
+        def get_ecam_service_properties(self, _dsn):
+            return service_properties
+
+    monkeypatch.setattr(module, "Client", FakeClient)
+
+    coordinator = CremalinkStatisticsCoordinator(
+        FakeHass(),
+        dsn="test-dsn",
+        token_file="/tmp/test-token.json",
+    )
+
+    result = asyncio.run(coordinator._async_update_data())
+
+    assert result["service_properties"] == service_properties
+
+
+def test_statistics_service_property_failure_keeps_a2_snapshot(monkeypatch):
+    """Auxiliary d5xx failure must not invalidate a successful A2 read."""
+
+    snapshot = {
+        "known": {"total_beverages": 42},
+        "unknown": {100: 111, 109: 222},
+        "raw": {100: 111, 109: 222, 43010: 42},
+    }
+
+    class FakeClient:
+        def __init__(self, _token_file):
+            pass
+
+        def get_ecam610_statistics(
+            self,
+            _dsn,
+            *,
+            progress_callback=None,
+        ):
+            return snapshot
+
+        def get_ecam_service_properties(self, _dsn):
+            raise RuntimeError("synthetic d5xx failure")
+
+    monkeypatch.setattr(module, "Client", FakeClient)
+
+    coordinator = CremalinkStatisticsCoordinator(
+        FakeHass(),
+        dsn="test-dsn",
+        token_file="/tmp/test-token.json",
+    )
+
+    result = asyncio.run(coordinator._async_update_data())
+
+    assert result["known"]["total_beverages"] == 42
+    assert result["raw"][100] == 111
+    assert result["service_properties"] == {}
