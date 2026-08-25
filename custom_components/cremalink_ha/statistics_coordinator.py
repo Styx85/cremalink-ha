@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 
 from cremalink import Client
 from homeassistant.core import HomeAssistant
@@ -15,6 +15,12 @@ from homeassistant.helpers.update_coordinator import (
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _snapshot_timestamp() -> str:
+    """Return the UTC timestamp of a genuinely successful A2 snapshot."""
+    return datetime.now(timezone.utc).isoformat()
+
 
 # A complete ECAM610 A2 table currently takes about 15 seconds to read.
 # Lifetime counters do not need the fast 1/30-second monitor polling.
@@ -50,9 +56,14 @@ class CremalinkStatisticsCoordinator(DataUpdateCoordinator[dict]):
             return client.get_ecam610_statistics(self.dsn)
 
         try:
-            return await self.hass.async_add_executor_job(
+            snapshot = await self.hass.async_add_executor_job(
                 _read_statistics
             )
+
+            # Stamp only genuinely successful complete A2 reads.
+            # A retained snapshot after a timeout keeps its old timestamp.
+            snapshot["snapshot_fetched_at"] = _snapshot_timestamp()
+            return snapshot
         except TimeoutError as err:
             # Lifetime statistics change slowly. If a transient A2 timeout
             # occurs after at least one successful read, keep the last

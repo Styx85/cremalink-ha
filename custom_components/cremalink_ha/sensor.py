@@ -439,4 +439,5 @@ class CremalinkStatisticsDiagnosticsSensor(
                 for key, value in raw.items()
             },
             "raw_count": len(raw),
+            "snapshot_fetched_at": data.get("snapshot_fetched_at"),
         }

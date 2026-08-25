@@ -48,6 +48,7 @@ SNAPSHOT = {
         43010: 1234,
         43014: 333,
     },
+    "snapshot_fetched_at": "2026-08-25T07:00:00+00:00",
 }
 
 
@@ -141,6 +142,10 @@ def test_diagnostics_sensor_preserves_unknown_and_raw_values():
     assert attrs["raw_statistics"]["43010"] == 1234
     assert attrs["raw_statistics"]["106"] == 643000
     assert attrs["raw_count"] == 9
+    assert (
+        attrs["snapshot_fetched_at"]
+        == "2026-08-25T07:00:00+00:00"
+    )
 
 
 def test_diagnostics_entity_disabled_by_default():
