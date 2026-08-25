@@ -53,6 +53,21 @@ class CremalinkStatisticsCoordinator(DataUpdateCoordinator[dict]):
             return await self.hass.async_add_executor_job(
                 _read_statistics
             )
+        except TimeoutError as err:
+            # Lifetime statistics change slowly. If a transient A2 timeout
+            # occurs after at least one successful read, keep the last
+            # snapshot instead of making all statistics unavailable.
+            if isinstance(self.data, dict) and self.data:
+                _LOGGER.debug(
+                    "A2 statistics refresh timed out; retaining previous "
+                    "snapshot: %s",
+                    err,
+                )
+                return self.data
+
+            raise UpdateFailed(
+                f"Error reading ECAM statistics: {err}"
+            ) from err
         except Exception as err:
             raise UpdateFailed(
                 f"Error reading ECAM statistics: {err}"

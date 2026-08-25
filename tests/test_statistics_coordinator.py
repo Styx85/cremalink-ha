@@ -93,3 +93,39 @@ def test_statistics_coordinator_wraps_client_failure(monkeypatch):
         match="synthetic cloud failure",
     ):
         asyncio.run(coordinator._async_update_data())
+
+
+def test_statistics_coordinator_retains_snapshot_on_a2_timeout(monkeypatch):
+    """A transient A2 timeout must keep the last successful snapshot."""
+
+    previous = {
+        "known": {
+            "total_beverages": 123,
+        },
+        "unknown": {},
+        "raw": {
+            43010: 123,
+        },
+    }
+
+    class FakeClient:
+        def __init__(self, _token_file):
+            pass
+
+        def get_ecam610_statistics(self, _dsn):
+            raise TimeoutError(
+                "No A2 statistics response for start_id=3001 within 20s"
+            )
+
+    monkeypatch.setattr(module, "Client", FakeClient)
+
+    coordinator = CremalinkStatisticsCoordinator(
+        FakeHass(),
+        dsn="test-dsn",
+        token_file="/tmp/test-token.json",
+    )
+    coordinator.data = previous
+
+    result = asyncio.run(coordinator._async_update_data())
+
+    assert result is previous

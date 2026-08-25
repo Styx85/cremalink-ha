@@ -350,7 +350,10 @@ class CremalinkStatisticsSensor(
         if not isinstance(known, dict):
             return False
 
-        return self._key in known and super().available
+        # Lifetime/statistics values are slow-changing.  A transient
+        # coordinator failure must not discard the last successfully
+        # received value or mark the entity unavailable.
+        return self._key in known
 
     @property
     def native_value(self):

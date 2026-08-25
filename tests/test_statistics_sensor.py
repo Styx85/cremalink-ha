@@ -105,7 +105,7 @@ def test_missing_statistic_is_unavailable():
     assert sensor.native_value is None
 
 
-def test_statistics_unavailable_after_failed_update():
+def test_statistics_retains_last_value_after_failed_update():
     coordinator = FakeCoordinator(SNAPSHOT)
     coordinator.last_update_success = False
 
@@ -118,7 +118,8 @@ def test_statistics_unavailable_after_failed_update():
         None,
     )
 
-    assert sensor.available is False
+    assert sensor.available is True
+    assert sensor.native_value == 1234
 
 
 def test_diagnostics_sensor_preserves_unknown_and_raw_values():
