@@ -197,3 +197,35 @@ def test_diagnostics_sensor_exposes_refresh_progress():
     assert attrs["a2_returned_count"] == 7
     assert attrs["a2_last_id"] == 23006
     assert attrs["a2_collected_count"] == 39
+
+
+def test_diagnostics_sensor_exposes_service_properties():
+    """Diagnostic attributes should expose auxiliary d5xx values."""
+
+    snapshot = {
+        "known": {"total_beverages": 42},
+        "unknown": {100: 111, 109: 222},
+        "raw": {100: 111, 109: 222, 43010: 42},
+        "service_properties": {
+            "d550_water_calc_qty": 333,
+            "d555_water_filter_qty": 444,
+            "d556_water_hardness": 3,
+            "d512_percentage_to_deca": 55,
+            "d513_percentage_usage_fltr": 66,
+        },
+    }
+
+    sensor = CremalinkStatisticsDiagnosticsSensor(
+        FakeCoordinator(snapshot),
+        ENTRY,
+    )
+
+    attrs = sensor.extra_state_attributes
+
+    assert attrs["service_properties"] == {
+        "d550_water_calc_qty": 333,
+        "d555_water_filter_qty": 444,
+        "d556_water_hardness": 3,
+        "d512_percentage_to_deca": 55,
+        "d513_percentage_usage_fltr": 66,
+    }

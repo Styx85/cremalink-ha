@@ -444,6 +444,10 @@ class CremalinkStatisticsDiagnosticsSensor(
                 str(key): value
                 for key, value in raw.items()
             },
+            "service_properties": data.get(
+                "service_properties",
+                {},
+            ),
             "raw_count": len(raw),
             "snapshot_fetched_at": data.get("snapshot_fetched_at"),
             "refresh_in_progress": getattr(
