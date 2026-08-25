@@ -1,5 +1,6 @@
 """Button platform for the Cremalink integration."""
 from homeassistant.components.button import ButtonEntity
+from homeassistant.const import EntityCategory
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN, CONF_CONNECTION_TYPE, CONNECTION_CLOUD
@@ -118,6 +119,7 @@ class CremalinkButton(CoordinatorEntity, ButtonEntity):
 class CremalinkStatisticsRefreshButton(CoordinatorEntity, ButtonEntity):
     """Button that triggers one complete A2 statistics refresh."""
 
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_has_entity_name = True
     _attr_translation_key = "refresh_a2_statistics"
     _attr_icon = "mdi:database-refresh"
