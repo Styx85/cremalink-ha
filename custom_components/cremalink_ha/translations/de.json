@@ -2,13 +2,37 @@
   "entity": {
     "sensor": {
       "status_name": {
-        "name": "Status"
+        "name": "Status",
+        "state": {
+          "in_standby": "Bereitschaft",
+          "waking_up": "Wird eingeschaltet",
+          "preparing_milk": "Milchzubereitung",
+          "dispensing_hot_water": "Heißwasserausgabe",
+          "cleaning_milk": "Milchsystem-Reinigung",
+          "preparing_chocolate": "Schokolade wird zubereitet",
+          "preparing_milk_alt": "Milchzubereitung",
+          "going_to_sleep": "Wechselt in Bereitschaft",
+          "unknown_29": "Unbekannter Status 29",
+          "descaling": "Entkalkung",
+          "preparing_steam": "Dampferzeugung",
+          "ready": "Bereit",
+          "rinsing": "Spülvorgang"
+        }
       },
       "progress_percent": {
         "name": "Fortschritt"
       },
       "accessory_name": {
-        "name": "Zubehör"
+        "name": "Zubehör",
+        "state": {
+          "none": "Kein Zubehör",
+          "hot_water_spout": "Heißwasserauslauf",
+          "latte_crema_hot": "LatteCrema Hot",
+          "chocolate": "Schokoladen-Zubehör",
+          "latte_crema_hot_clean": "LatteCrema Hot – Reinigung",
+          "latte_crema_cool": "LatteCrema Cool",
+          "latte_crema_cool_clean": "LatteCrema Cool – Reinigung"
+        }
       },
       "total_beverages": {
         "name": "Getränke gesamt"
@@ -161,6 +185,31 @@
       },
       "stop_brewing": {
         "name": "Zubereitung stoppen"
+      }
+    },
+    "binary_sensor": {
+      "is_busy": {
+        "name": "Vorgang aktiv"
+      },
+      "is_idle": {
+        "name": "Leerlauf"
+      },
+      "is_watertank_open": {
+        "name": "Wassertank"
+      },
+      "is_watertank_empty": {
+        "name": "Wassertank leer"
+      },
+      "is_waste_container_full": {
+        "name": "Kaffeesatzbehälter voll"
+      },
+      "is_waste_container_missing": {
+        "name": "Kaffeesatzbehälter fehlt"
+      }
+    },
+    "switch": {
+      "power": {
+        "name": "Ein/Aus"
       }
     }
   }
