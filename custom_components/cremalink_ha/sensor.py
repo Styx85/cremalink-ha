@@ -180,6 +180,25 @@ STATISTICS_SENSORS = [
         None,
     ),
 
+    (
+        "espresso_soul",
+        "Espresso SOUL",
+        "mdi:coffee",
+        None,
+    ),
+    (
+        "over_ice",
+        "Over Ice",
+        "mdi:cup",
+        None,
+    ),
+    (
+        "custom_milk_coffee_beverages",
+        "Custom milk-coffee beverages",
+        "mdi:coffee",
+        None,
+    ),
+
     # Maintenance
     (
         "descale_count",
@@ -267,7 +286,8 @@ class CremalinkSensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
 
         self._key = key
-        self._attr_name = f"{entry.title} {name}"
+        self._attr_has_entity_name = True
+        self._attr_translation_key = key
         self._attr_unique_id = f"{entry.entry_id}_{key}"
         self._attr_icon = icon
         self._attr_native_unit_of_measurement = unit
@@ -320,7 +340,8 @@ class CremalinkStatisticsSensor(
         super().__init__(coordinator)
 
         self._key = key
-        self._attr_name = f"{entry.title} {name}"
+        self._attr_has_entity_name = True
+        self._attr_translation_key = key
         self._attr_unique_id = (
             f"{entry.entry_id}_statistics_{key}"
         )
@@ -388,9 +409,8 @@ class CremalinkStatisticsDiagnosticsSensor(
 
         super().__init__(coordinator)
 
-        self._attr_name = (
-            f"{entry.title} A2 statistics diagnostics"
-        )
+        self._attr_has_entity_name = True
+        self._attr_translation_key = "a2_statistics_diagnostics"
         self._attr_unique_id = (
             f"{entry.entry_id}_statistics_diagnostics"
         )

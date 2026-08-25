@@ -77,5 +77,116 @@
     "abort": {
       "already_configured": "Device is already configured."
     }
+  },
+  "entity": {
+    "sensor": {
+      "status_name": {
+        "name": "Status"
+      },
+      "progress_percent": {
+        "name": "Progress"
+      },
+      "accessory_name": {
+        "name": "Accessory"
+      },
+      "total_beverages": {
+        "name": "Total beverages"
+      },
+      "total_black_beverages": {
+        "name": "Black beverages"
+      },
+      "total_milk_beverages": {
+        "name": "Milk beverages"
+      },
+      "total_other_beverages": {
+        "name": "Other beverages"
+      },
+      "total_water_l": {
+        "name": "Total water"
+      },
+      "total_milk_coffee_beverages": {
+        "name": "Milk coffee category"
+      },
+      "total_milk_only_beverages": {
+        "name": "Milk only category"
+      },
+      "total_espressos": {
+        "name": "Espressos total"
+      },
+      "espresso": {
+        "name": "Espresso"
+      },
+      "coffee": {
+        "name": "Coffee"
+      },
+      "long_coffee": {
+        "name": "Long"
+      },
+      "doppio": {
+        "name": "Doppio+"
+      },
+      "americano": {
+        "name": "Americano"
+      },
+      "cappuccino": {
+        "name": "Cappuccino"
+      },
+      "latte_macchiato": {
+        "name": "Latte Macchiato"
+      },
+      "caffe_latte": {
+        "name": "Caffè Latte"
+      },
+      "flat_white": {
+        "name": "Flat White"
+      },
+      "espresso_macchiato": {
+        "name": "Espresso Macchiato"
+      },
+      "hot_milk": {
+        "name": "Hot milk"
+      },
+      "cappuccino_doppio": {
+        "name": "Cappuccino+"
+      },
+      "cappuccino_mix": {
+        "name": "Cappuccino Mix"
+      },
+      "hot_water": {
+        "name": "Hot water"
+      },
+      "tea": {
+        "name": "Tea"
+      },
+      "coffee_pot": {
+        "name": "Coffee pot"
+      },
+      "espresso_soul": {
+        "name": "Espresso SOUL"
+      },
+      "over_ice": {
+        "name": "Over Ice"
+      },
+      "custom_milk_coffee_beverages": {
+        "name": "Custom milk-coffee beverages"
+      },
+      "descale_count": {
+        "name": "Descales"
+      },
+      "filter_replacements": {
+        "name": "Filter replacements"
+      },
+      "grounds_container_clean_count": {
+        "name": "Grounds container cleanings"
+      },
+      "a2_statistics_diagnostics": {
+        "name": "A2 statistics diagnostics"
+      }
+    },
+    "button": {
+      "refresh_a2_statistics": {
+        "name": "Refresh A2 statistics"
+      }
+    }
   }
 }

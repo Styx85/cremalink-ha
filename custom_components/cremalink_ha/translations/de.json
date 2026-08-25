@@ -1,0 +1,113 @@
+{
+  "entity": {
+    "sensor": {
+      "status_name": {
+        "name": "Status"
+      },
+      "progress_percent": {
+        "name": "Fortschritt"
+      },
+      "accessory_name": {
+        "name": "Zubehör"
+      },
+      "total_beverages": {
+        "name": "Getränke gesamt"
+      },
+      "total_black_beverages": {
+        "name": "Kaffeegetränke ohne Milch"
+      },
+      "total_milk_beverages": {
+        "name": "Milchgetränke"
+      },
+      "total_other_beverages": {
+        "name": "Sonstige Getränke"
+      },
+      "total_water_l": {
+        "name": "Wasserverbrauch gesamt"
+      },
+      "total_milk_coffee_beverages": {
+        "name": "Kaffee-Milch-Getränke"
+      },
+      "total_milk_only_beverages": {
+        "name": "Reine Milchgetränke"
+      },
+      "total_espressos": {
+        "name": "Espressogetränke gesamt"
+      },
+      "espresso": {
+        "name": "Espresso"
+      },
+      "coffee": {
+        "name": "Kaffee"
+      },
+      "long_coffee": {
+        "name": "Long"
+      },
+      "doppio": {
+        "name": "Doppio+"
+      },
+      "americano": {
+        "name": "Americano"
+      },
+      "cappuccino": {
+        "name": "Cappuccino"
+      },
+      "latte_macchiato": {
+        "name": "Latte Macchiato"
+      },
+      "caffe_latte": {
+        "name": "Caffè Latte"
+      },
+      "flat_white": {
+        "name": "Flat White"
+      },
+      "espresso_macchiato": {
+        "name": "Espresso Macchiato"
+      },
+      "hot_milk": {
+        "name": "Heiße Milch"
+      },
+      "cappuccino_doppio": {
+        "name": "Cappuccino+"
+      },
+      "cappuccino_mix": {
+        "name": "Cappuccino Mix"
+      },
+      "hot_water": {
+        "name": "Heißwasser"
+      },
+      "tea": {
+        "name": "Tee"
+      },
+      "coffee_pot": {
+        "name": "Kaffeekanne"
+      },
+      "espresso_soul": {
+        "name": "Espresso SOUL"
+      },
+      "over_ice": {
+        "name": "Over Ice"
+      },
+      "custom_milk_coffee_beverages": {
+        "name": "Individuelle Kaffee-Milch-Getränke"
+      },
+      "descale_count": {
+        "name": "Entkalkungen"
+      },
+      "filter_replacements": {
+        "name": "Filterwechsel"
+      },
+      "grounds_container_clean_count": {
+        "name": "Kaffeesatzbehälter-Leerungen"
+      },
+      "a2_statistics_diagnostics": {
+        "name": "A2-Statistikdiagnose"
+      }
+    },
+    "button": {
+      "refresh_a2_statistics": {
+        "name": "A2-Statistik aktualisieren"
+      }
+    }
+  }
+}

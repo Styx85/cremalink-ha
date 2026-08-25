@@ -80,7 +80,8 @@ class CremalinkButton(CoordinatorEntity, ButtonEntity):
 class CremalinkStatisticsRefreshButton(CoordinatorEntity, ButtonEntity):
     """Button that triggers one complete A2 statistics refresh."""
 
-    _attr_name = "Refresh A2 statistics"
+    _attr_has_entity_name = True
+    _attr_translation_key = "refresh_a2_statistics"
     _attr_icon = "mdi:database-refresh"
     _attr_entity_registry_enabled_default = False
 
