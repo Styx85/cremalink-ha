@@ -47,6 +47,21 @@ class CremalinkStatisticsCoordinator(DataUpdateCoordinator[dict]):
 
         self.dsn = dsn
         self.token_file = token_file
+        self.refresh_in_progress = False
+
+    async def async_force_refresh(self) -> None:
+        """Run one complete manual A2 statistics refresh."""
+        if self.refresh_in_progress:
+            return
+
+        self.refresh_in_progress = True
+        self.async_update_listeners()
+
+        try:
+            await self.async_refresh()
+        finally:
+            self.refresh_in_progress = False
+            self.async_update_listeners()
 
     async def _async_update_data(self) -> dict:
         """Fetch a complete live ECAM610 statistics snapshot."""

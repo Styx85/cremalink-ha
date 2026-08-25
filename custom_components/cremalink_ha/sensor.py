@@ -440,4 +440,9 @@ class CremalinkStatisticsDiagnosticsSensor(
             },
             "raw_count": len(raw),
             "snapshot_fetched_at": data.get("snapshot_fetched_at"),
+            "refresh_in_progress": getattr(
+                self.coordinator,
+                "refresh_in_progress",
+                False,
+            ),
         }

@@ -14,6 +14,7 @@ class FakeCoordinator:
     def __init__(self, data):
         self.data = data
         self.last_update_success = True
+        self.refresh_in_progress = False
 
 
 ENTRY = SimpleNamespace(
@@ -146,6 +147,7 @@ def test_diagnostics_sensor_preserves_unknown_and_raw_values():
         attrs["snapshot_fetched_at"]
         == "2026-08-25T07:00:00+00:00"
     )
+    assert attrs["refresh_in_progress"] is False
 
 
 def test_diagnostics_entity_disabled_by_default():

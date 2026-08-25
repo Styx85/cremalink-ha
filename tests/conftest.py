@@ -21,6 +21,7 @@ _HA_MODULES = [
     "homeassistant.data_entry_flow",
     "homeassistant.components",
     "homeassistant.components.sensor",
+    "homeassistant.components.button",
     "homeassistant.components.diagnostics",
 ]
 
@@ -142,6 +143,10 @@ class _SensorEntity:
     pass
 
 
+class _ButtonEntity:
+    pass
+
+
 class _SensorStateClass:
     TOTAL_INCREASING = "total_increasing"
 
@@ -167,6 +172,9 @@ _uc_mod.UpdateFailed = _UpdateFailed
 _sensor_mod = sys.modules["homeassistant.components.sensor"]
 _sensor_mod.SensorEntity = _SensorEntity
 _sensor_mod.SensorStateClass = _SensorStateClass
+
+_button_mod = sys.modules["homeassistant.components.button"]
+_button_mod.ButtonEntity = _ButtonEntity
 
 _entity_mod = sys.modules["homeassistant.helpers.entity"]
 _entity_mod.DeviceInfo = _DeviceInfo

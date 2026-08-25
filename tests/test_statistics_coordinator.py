@@ -180,3 +180,41 @@ def test_statistics_snapshot_timestamp_changes_only_on_success(monkeypatch):
 
     assert second is first
     assert second["snapshot_fetched_at"] == "2026-08-25T07:00:00+00:00"
+
+
+def test_statistics_force_refresh_tracks_in_progress():
+    """A manual full A2 refresh must expose its running state."""
+
+    async def _run():
+        coordinator = CremalinkStatisticsCoordinator(
+            FakeHass(),
+            dsn="test-dsn",
+            token_file="/tmp/test-token.json",
+        )
+
+        started = asyncio.Event()
+        release = asyncio.Event()
+
+        async def fake_refresh():
+            started.set()
+            await release.wait()
+
+        coordinator.async_refresh = fake_refresh
+        coordinator.async_update_listeners = lambda: None
+
+        assert coordinator.refresh_in_progress is False
+
+        task = asyncio.create_task(
+            coordinator.async_force_refresh()
+        )
+
+        await started.wait()
+
+        assert coordinator.refresh_in_progress is True
+
+        release.set()
+        await task
+
+        assert coordinator.refresh_in_progress is False
+
+    asyncio.run(_run())
