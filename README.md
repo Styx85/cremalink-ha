@@ -19,7 +19,7 @@ This integration connects your Home Assistant instance to the **Cremalink** ecos
 > The goal is to make the library fully generic. If you encounter issues with other machines, contributions are highly encouraged!
 
 > [!NOTE]
-> **cremalink-ha** acts solely as a bridge to Home Assistant. Device management (e.g., adding new machines) is handled exclusively via the main **[cremalink](https://github.com/miditkl/cremalink)** project. Please set up your devices there before using this integration.
+> **cremalink-ha** uses the main **[cremalink](https://github.com/miditkl/cremalink)** library for machine communication. The normal setup flow signs in to the De'Longhi/Ayla cloud account to discover compatible machines, determine the model, and retrieve the LAN details required for local communication. Local control through the Cremalink Server Add-on is preferred when LAN details are available; the advanced/manual setup flow remains available when needed.
 ---
 
 ## 🚀 Installation
@@ -58,6 +58,22 @@ Before installing this integration, you must install and configure the **Cremali
     [More on the local add-on setup here.](https://github.com/miditkl/cremalink-ha/discussions/5)
 
 ---
+
+## ☕ ECAM610 / PrimaDonna Soul statistics
+
+On supported ECAM610-class machines, the integration reads the native A2
+statistics table directly from the machine. This avoids relying on cloud
+service counters that may be stale.
+
+The currently exposed statistics include beverage totals, individual beverage
+counters, maintenance counts, counted operating water, water since the last
+filter replacement, and a raw weighted descale-load value. Unknown A2 IDs are
+kept available through the disabled-by-default diagnostics entity instead of
+being assigned speculative meanings.
+
+A2 statistics are intentionally refreshed more slowly than the live machine
+status because a complete table read may take substantially longer than the
+normal monitor polling cycle.
 
 ## 🤝 Contributing
 

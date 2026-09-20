@@ -57,8 +57,14 @@ STATISTICS_SENSORS = [
     ),
     (
         "total_water_l",
-        "Total water",
+        "Counted operating water",
         "mdi:water",
+        UnitOfVolume.LITERS,
+    ),
+    (
+        "water_since_filter_change_l",
+        "Water since filter replacement",
+        "mdi:water-check",
         UnitOfVolume.LITERS,
     ),
 
@@ -200,6 +206,12 @@ STATISTICS_SENSORS = [
     ),
 
     # Maintenance
+    (
+        "descale_load_raw",
+        "Descale load (raw)",
+        "mdi:shimmer",
+        None,
+    ),
     (
         "descale_count",
         "Descales",
@@ -348,8 +360,17 @@ class CremalinkStatisticsSensor(
         self._attr_icon = icon
         self._attr_native_unit_of_measurement = unit
 
+        if key == "descale_load_raw":
+            # Weighted maintenance/load accumulator with an intentional
+            # reset after successful descaling. Its unit and weighting
+            # formula are not established, so do not expose it as a
+            # Home Assistant long-term increasing total.
+            self._attr_state_class = None
+
         if key == "total_water_l":
             self._attr_suggested_display_precision = 1
+        elif key == "water_since_filter_change_l":
+            self._attr_suggested_display_precision = 2
 
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},

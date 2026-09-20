@@ -126,7 +126,10 @@
         "name": "Other beverages"
       },
       "total_water_l": {
-        "name": "Total water"
+        "name": "Counted operating water"
+      },
+      "water_since_filter_change_l": {
+        "name": "Water since filter replacement"
       },
       "total_milk_coffee_beverages": {
         "name": "Milk coffee category"
@@ -193,6 +196,9 @@
       },
       "custom_milk_coffee_beverages": {
         "name": "Custom milk-coffee beverages"
+      },
+      "descale_load_raw": {
+        "name": "Descale load (raw)"
       },
       "descale_count": {
         "name": "Descales"
