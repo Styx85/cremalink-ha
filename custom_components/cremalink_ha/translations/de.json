@@ -58,34 +58,34 @@
       "status_name": {
         "name": "Status",
         "state": {
-          "in_standby": "Standby",
-          "waking_up": "Waking up",
-          "preparing_milk": "Preparing milk",
-          "dispensing_hot_water": "Dispensing hot water",
-          "cleaning_milk": "Cleaning milk system",
-          "preparing_chocolate": "Preparing chocolate",
-          "preparing_milk_alt": "Preparing milk",
-          "going_to_sleep": "Going to standby",
-          "unknown_29": "Unknown status 29",
-          "descaling": "Descaling",
-          "preparing_steam": "Preparing steam",
-          "ready": "Ready",
-          "rinsing": "Rinsing"
+          "in_standby": "Bereitschaft",
+          "waking_up": "Wird eingeschaltet",
+          "preparing_milk": "Milchzubereitung",
+          "dispensing_hot_water": "Heißwasserausgabe",
+          "cleaning_milk": "Milchsystem-Reinigung",
+          "preparing_chocolate": "Schokolade wird zubereitet",
+          "preparing_milk_alt": "Milchzubereitung",
+          "going_to_sleep": "Wechselt in Bereitschaft",
+          "unknown_29": "Unbekannter Status 29",
+          "descaling": "Entkalkung",
+          "preparing_steam": "Dampferzeugung",
+          "ready": "Bereit",
+          "rinsing": "Spülvorgang"
         }
       },
       "progress_percent": {
-        "name": "Progress"
+        "name": "Fortschritt"
       },
       "accessory_name": {
-        "name": "Accessory",
+        "name": "Zubehör",
         "state": {
-          "none": "No accessory",
-          "hot_water_spout": "Hot water spout",
+          "none": "Kein Zubehör",
+          "hot_water_spout": "Heißwasserauslauf",
           "latte_crema_hot": "LatteCrema Hot",
-          "chocolate": "Chocolate accessory",
-          "latte_crema_hot_clean": "LatteCrema Hot – Clean",
+          "chocolate": "Schokoladen-Zubehör",
+          "latte_crema_hot_clean": "LatteCrema Hot – Reinigung",
           "latte_crema_cool": "LatteCrema Cool",
-          "latte_crema_cool_clean": "LatteCrema Cool – Clean"
+          "latte_crema_cool_clean": "LatteCrema Cool – Reinigung"
         }
       }
     },
@@ -106,7 +106,7 @@
         "name": "Cappuccino+"
       },
       "brew_coffee": {
-        "name": "Coffee"
+        "name": "Kaffee"
       },
       "brew_cortado": {
         "name": "Cortado"
@@ -130,10 +130,10 @@
         "name": "Flat White"
       },
       "brew_hot_milk": {
-        "name": "Hot milk"
+        "name": "Heiße Milch"
       },
       "brew_hot_water": {
-        "name": "Hot water"
+        "name": "Heißwasser"
       },
       "brew_latte_macchiato": {
         "name": "Latte Macchiato"
@@ -142,32 +142,32 @@
         "name": "Long"
       },
       "stop_brewing": {
-        "name": "Stop brewing"
+        "name": "Zubereitung stoppen"
       }
     },
     "binary_sensor": {
       "is_busy": {
-        "name": "Operation active"
+        "name": "Vorgang aktiv"
       },
       "is_idle": {
-        "name": "Idle"
+        "name": "Leerlauf"
       },
       "is_watertank_open": {
-        "name": "Water tank"
+        "name": "Wassertank"
       },
       "is_watertank_empty": {
-        "name": "Water tank empty"
+        "name": "Wassertank leer"
       },
       "is_waste_container_full": {
-        "name": "Grounds container full"
+        "name": "Kaffeesatzbehälter voll"
       },
       "is_waste_container_missing": {
-        "name": "Grounds container missing"
+        "name": "Kaffeesatzbehälter fehlt"
       }
     },
     "switch": {
       "power": {
-        "name": "Power"
+        "name": "Ein/Aus"
       }
     }
   }
