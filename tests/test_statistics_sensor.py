@@ -29,6 +29,8 @@ SNAPSHOT = {
         "total_black_beverages": 234,
         "total_milk_beverages": 1000,
         "total_water_l": 321.5,
+        "water_since_filter_change_l": 0.617,
+        "descale_load_raw": 7000,
         "descale_count": 7,
         "filter_replacements": 4,
         "grounds_container_clean_count": 456,
@@ -39,9 +41,11 @@ SNAPSHOT = {
         43014: 333,
     },
     "raw": {
+        100: 7000,
         105: 7,
         106: 643000,
         108: 4,
+        109: 1234,
         115: 456,
         3000: 234,
         43000: 111,
@@ -95,9 +99,27 @@ def test_total_water():
 
 
 def test_maintenance_statistics():
+    descale_load = make_sensor("descale_load_raw")
+
+    assert descale_load.native_value == 7000
+    assert descale_load._attr_state_class is None
+
     assert make_sensor("descale_count").native_value == 7
     assert make_sensor("filter_replacements").native_value == 4
     assert make_sensor("grounds_container_clean_count").native_value == 456
+
+
+def test_water_since_filter_change():
+    sensor = make_sensor(
+        "water_since_filter_change_l",
+        name="Water since filter replacement",
+        unit="L",
+    )
+
+    assert sensor.available is True
+    assert sensor.native_value == 0.617
+    assert sensor._attr_native_unit_of_measurement == "L"
+    assert sensor._attr_suggested_display_precision == 2
 
 
 def test_missing_statistic_is_unavailable():
@@ -142,7 +164,7 @@ def test_diagnostics_sensor_preserves_unknown_and_raw_values():
     }
     assert attrs["raw_statistics"]["43010"] == 1234
     assert attrs["raw_statistics"]["106"] == 643000
-    assert attrs["raw_count"] == 9
+    assert attrs["raw_count"] == 11
     assert (
         attrs["snapshot_fetched_at"]
         == "2026-08-25T07:00:00+00:00"
@@ -204,8 +226,8 @@ def test_diagnostics_sensor_exposes_service_properties():
 
     snapshot = {
         "known": {"total_beverages": 42},
-        "unknown": {100: 111, 109: 222},
-        "raw": {100: 111, 109: 222, 43010: 42},
+        "unknown": {101: 111, 111: 222},
+        "raw": {101: 111, 111: 222, 43010: 42},
         "service_properties": {
             "d550_water_calc_qty": 333,
             "d555_water_filter_qty": 444,

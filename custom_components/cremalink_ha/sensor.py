@@ -48,8 +48,14 @@ STATISTICS_SENSORS = [
     ),
     (
         "total_water_l",
-        "Total water",
+        "Counted operating water",
         "mdi:water",
+        UnitOfVolume.LITERS,
+    ),
+    (
+        "water_since_filter_change_l",
+        "Water since filter replacement",
+        "mdi:water-check",
         UnitOfVolume.LITERS,
     ),
 
@@ -192,6 +198,12 @@ STATISTICS_SENSORS = [
 
     # Maintenance
     (
+        "descale_load_raw",
+        "Descale load (raw)",
+        "mdi:shimmer",
+        None,
+    ),
+    (
         "descale_count",
         "Descales",
         "mdi:shimmer",
@@ -319,8 +331,17 @@ class CremalinkStatisticsSensor(
         self._attr_icon = icon
         self._attr_native_unit_of_measurement = unit
 
+        if key == "descale_load_raw":
+            # This value is a weighted maintenance accumulator and resets
+            # after a completed descale cycle. The exact weighting formula
+            # is not established, so it must not be a long-term increasing
+            # total and must not be presented as a percentage or water unit.
+            self._attr_state_class = None
+
         if key == "total_water_l":
             self._attr_suggested_display_precision = 1
+        elif key == "water_since_filter_change_l":
+            self._attr_suggested_display_precision = 2
 
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
