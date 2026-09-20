@@ -10,9 +10,9 @@
   "iot_class": "local_polling",
   "config_flow": true,
   "requirements": [
-    "cremalink@git+https://github.com/Styx85/cremalink.git@31d61915694fb752aa2de30fdbb0fda5670b963d"
+    "cremalink@git+https://github.com/Styx85/cremalink.git@71c68faf8df8a17c7516661480b9326160057abd"
   ],
   "issue_tracker": "https://github.com/miditkl/cremalink-ha/issues",
-  "version": "v0.2.0b10",
+  "version": "v0.2.0b11",
   "quality_scale": "bronze"
 }

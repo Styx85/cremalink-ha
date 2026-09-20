@@ -1,6 +1,6 @@
 name: "Cremalink for Home-Assistant"
 description: "Local Cremalink server for Home Assistant, providing LAN communication with supported coffee machines."
-version: "v0.1.0b35"
+version: "v0.1.0b36"
 url: "https://github.com/Styx85/cremalink-ha"
 slug: "cremalink_server"
 init: false
