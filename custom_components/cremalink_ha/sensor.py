@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
@@ -255,6 +257,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
         )
 
+    # Temporary fork-only monitor debugging aid.
+    entities.append(
+        CremalinkMonitorDiagnosticsSensor(
+            coordinator,
+            entry,
+        )
+    )
+
     if statistics_coordinator is not None:
         for key, name, icon, unit in STATISTICS_SENSORS:
             entities.append(
@@ -328,6 +338,158 @@ class CremalinkSensor(CoordinatorEntity, SensorEntity):
             self._key,
             None,
         )
+
+
+class CremalinkMonitorDiagnosticsSensor(
+    CoordinatorEntity,
+    SensorEntity,
+):
+    """Expose the exact monitor snapshot currently used by Home Assistant."""
+
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
+    _attr_icon = "mdi:bug-check"
+
+    def __init__(self, coordinator, entry):
+        """Initialize the temporary monitor diagnostics sensor."""
+        super().__init__(coordinator)
+
+        self._attr_name = f"{entry.title} Monitor diagnostics"
+        self._attr_unique_id = (
+            f"{entry.entry_id}_monitor_diagnostics"
+        )
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name=entry.title,
+            manufacturer="cremalink",
+        )
+
+    @property
+    def available(self):
+        """Return whether at least one monitor snapshot exists."""
+        return self.coordinator.data is not None
+
+    @property
+    def native_value(self):
+        """Use receive time as state so stale frames are obvious."""
+        data = self.coordinator.data
+        received_at = getattr(data, "received_at", None)
+
+        if received_at is None:
+            return None
+
+        return received_at.isoformat()
+
+    @property
+    def extra_state_attributes(self):
+        """Expose raw, parsed and derived values from one snapshot."""
+        data = self.coordinator.data
+
+        if data is None:
+            return {}
+
+        snapshot = getattr(data, "snapshot", None)
+        received_at = getattr(data, "received_at", None)
+
+        frame_age_seconds = None
+        if received_at is not None:
+            try:
+                frame_age_seconds = round(
+                    max(0.0, time.time() - received_at.timestamp()),
+                    3,
+                )
+            except Exception:
+                frame_age_seconds = None
+
+        interval = getattr(
+            self.coordinator,
+            "update_interval",
+            None,
+        )
+        interval_seconds = None
+        if interval is not None:
+            try:
+                interval_seconds = interval.total_seconds()
+            except Exception:
+                interval_seconds = None
+
+        available_fields = list(
+            getattr(data, "available_fields", []) or []
+        )
+        derived = {}
+        for field in available_fields:
+            try:
+                derived[field] = getattr(data, field)
+            except Exception as err:
+                derived[field] = f"<error: {err}>"
+
+        parsed = dict(getattr(data, "parsed", {}) or {})
+
+        return {
+            "received_at": (
+                received_at.isoformat()
+                if received_at is not None
+                else None
+            ),
+            "frame_age_seconds": frame_age_seconds,
+            "source": getattr(snapshot, "source", None),
+            "device_id": getattr(snapshot, "device_id", None),
+            "coordinator_last_update_success": getattr(
+                self.coordinator,
+                "last_update_success",
+                None,
+            ),
+            "coordinator_update_interval_seconds": interval_seconds,
+            "monitor_consecutive_failures": getattr(
+                self.coordinator,
+                "monitor_consecutive_failures",
+                None,
+            ),
+            "raw_b64": getattr(data, "raw_b64", None),
+            "raw_hex": (
+                getattr(data, "raw", b"").hex()
+                if getattr(data, "raw", None)
+                else ""
+            ),
+            "warnings": list(
+                getattr(snapshot, "warnings", []) or []
+            ),
+            "errors": list(
+                getattr(snapshot, "errors", []) or []
+            ),
+            "parsed": parsed,
+            "status": parsed.get("status"),
+            "status_name": getattr(data, "status_name", None),
+            "action": parsed.get("action"),
+            "action_name": getattr(data, "action_name", None),
+            "progress": parsed.get("progress"),
+            "accessory": parsed.get("accessory"),
+            "accessory_name": getattr(
+                data,
+                "accessory_name",
+                None,
+            ),
+            "alarms": parsed.get("alarms"),
+            "switches": parsed.get("switches"),
+            "derived": derived,
+            "is_busy": derived.get("is_busy"),
+            "is_idle": derived.get("is_idle"),
+            "is_watertank_empty": derived.get(
+                "is_watertank_empty"
+            ),
+            "is_watertank_open": derived.get(
+                "is_watertank_open"
+            ),
+            "is_waste_container_full": derived.get(
+                "is_waste_container_full"
+            ),
+            "is_waste_container_missing": derived.get(
+                "is_waste_container_missing"
+            ),
+            "is_milk_fridge_warning": derived.get(
+                "is_milk_fridge_warning"
+            ),
+        }
 
 
 class CremalinkStatisticsSensor(
